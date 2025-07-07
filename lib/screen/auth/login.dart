@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:hadirin_app/screen/auth/register.dart';
 import 'package:hadirin_app/constant/app_color.dart';
 import 'package:hadirin_app/constant/app_style.dart';
+import 'package:hadirin_app/screen/main_screen/button_navbar.dart';
+import 'package:hadirin_app/screen/main_screen/home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -10,8 +13,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  bool isVisibility = false;
+  bool passwordVisible = true;
   bool isLoading = false;
+  bool rememberMe = false;
 
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -49,13 +53,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     text: "Welcome Back",
                   ),
                   SizedBox(height: 14),
-                  AppStyle.buildTitle(
+                  AppStyle.normalTitle(
                     color: Color(0xFFffffff),
                     text: "Login to your account",
                   ),
                   SizedBox(height: 58),
                   Container(
-                    height: 448,
+                    height: 500,
                     width: 351,
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -67,38 +71,90 @@ class _LoginScreenState extends State<LoginScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(height: 53),
-                          AppStyle.buildTitle(
+                          AppStyle.normalTitle(
                             color: AppColor.coklat,
                             text: "Username",
                           ),
                           SizedBox(height: 14),
-                          AppStyle.buildTextField(
+                          AppStyle.TextField(
                             controller: usernameController,
                             color: Color(0xffE6E6E6),
+                            colorItem: AppColor.coklat,
                           ),
                           SizedBox(height: 14),
-                          AppStyle.buildTitle(
+                          AppStyle.normalTitle(
                             color: AppColor.coklat,
                             text: "Password",
                           ),
                           SizedBox(height: 14),
-                          AppStyle.buildTextField(
+                          AppStyle.TextField(
                             controller: passwordController,
                             color: Color(0xffE6E6E6),
-                            isVisibility: true,
                             isPassword: true,
+                            isVisibility: passwordVisible,
+                            onPressed: () {
+                              setState(() {
+                                passwordVisible = !passwordVisible;
+                              });
+                            },
                           ),
                           SizedBox(height: 18),
 
                           Row(
                             children: [
-                              // Checkbox(value: value, onChanged: onChanged)
-                              AppStyle.buildTitle(
+                              Container(
+                                height: 20,
+                                width: 20,
+                                decoration: BoxDecoration(
+                                  color: Color(0xffE6E6E6),
+                                ),
+                                child: Checkbox(
+                                  value: rememberMe,
+                                  onChanged: (value) {},
+                                ),
+                              ),
+                              SizedBox(width: 4),
+                              AppStyle.normalTitle(
                                 text: "Remember me",
                                 fontWeight: FontWeight.w300,
                               ),
-                              Spacer(),
-                              AppStyle.titleBold(text: "Forgot Password"),
+                            ],
+                          ),
+                          SizedBox(height: 44),
+
+                          SizedBox(
+                            height: 56,
+                            width: double.infinity,
+                            child: AppStyle.buttonAuth(
+                              onPressed: () {
+                                Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ButtonNavbar(),
+                                  ),
+                                  (route) => false,
+                                );
+                              },
+                              text: "Login",
+                            ),
+                          ),
+                          SizedBox(height: 18),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              AppStyle.normalTitle(text: "Don't have account?"),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => RegisterScreen(),
+                                    ),
+                                  );
+                                },
+                                child: AppStyle.titleBold(text: "Sign Up"),
+                              ),
                             ],
                           ),
                         ],
@@ -110,55 +166,6 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget buildTextField({
-    String? hintText,
-    bool isPassword = false,
-    required TextEditingController controller,
-  }) {
-    return TextFormField(
-      controller: controller,
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Lengkapi data';
-        }
-        return null;
-      },
-      obscureText: isPassword ? isVisibility : false,
-
-      decoration: InputDecoration(
-        hintText: hintText,
-        hintStyle: TextStyle(color: Colors.black54),
-
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(color: Colors.white38, width: 0),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(color: Colors.white38),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(color: Colors.white38, width: 0),
-        ),
-        suffixIcon:
-            isPassword
-                ? IconButton(
-                  onPressed: () {
-                    setState(() {
-                      isVisibility = !isVisibility;
-                    });
-                  },
-                  icon: Icon(
-                    isVisibility ? Icons.visibility_off : Icons.visibility,
-                    color: Colors.black54,
-                  ),
-                )
-                : null,
       ),
     );
   }

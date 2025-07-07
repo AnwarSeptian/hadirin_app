@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:hadirin_app/constant/app_color.dart';
 
 class AppStyle {
   static Text titleBold({String? text, double? fontSize, Color? color}) {
     return Text(
       text ?? "",
-      style: TextStyle(
-        fontSize: fontSize ?? 16,
-        fontWeight: FontWeight.bold,
-        color: color,
+      style: GoogleFonts.inter(
+        textStyle: TextStyle(
+          fontSize: fontSize ?? 16,
+          fontWeight: FontWeight.bold,
+          color: color,
+        ),
       ),
     );
   }
 
-  static Text buildTitle({
+  static Text normalTitle({
     String? text,
     double? fontSize,
     Color? color,
@@ -20,15 +24,17 @@ class AppStyle {
   }) {
     return Text(
       text ?? "",
-      style: TextStyle(
-        fontSize: fontSize ?? 16,
-        fontWeight: fontWeight ?? FontWeight.normal,
-        color: color,
+      style: GoogleFonts.inter(
+        textStyle: TextStyle(
+          fontSize: fontSize ?? 16,
+          fontWeight: fontWeight ?? FontWeight.normal,
+          color: color,
+        ),
       ),
     );
   }
 
-  static TextFormField buildTextField({
+  static TextFormField TextField({
     String? hintText,
     Color? color,
     Color? colorItem,
@@ -46,20 +52,21 @@ class AppStyle {
         }
         return null;
       },
-      style: TextStyle(
-        color: color ?? Colors.black,
-        fontWeight: FontWeight.normal,
+      style: GoogleFonts.inter(
+        textStyle: TextStyle(
+          color: colorItem ?? Colors.black,
+          fontWeight: FontWeight.normal,
+        ),
       ),
       obscureText: isPassword ? isVisibility : false,
       decoration: InputDecoration(
-        hintText: hintText,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5),
-          borderSide: BorderSide(color: Color(0xffE6E6E6), width: 1.0),
+          borderSide: BorderSide(color: AppColor.coklat, width: 1.0),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5),
-          borderSide: BorderSide(color: Color(0xffE6E6E6), width: 1.0),
+          borderSide: BorderSide(color: AppColor.coklat, width: 1.0),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5),
@@ -70,15 +77,25 @@ class AppStyle {
         suffixIcon:
             isPassword
                 ? IconButton(
-                  onPressed: () {
-                    onPressed;
-                  },
+                  onPressed: onPressed,
                   icon: Icon(
                     isVisibility ? Icons.visibility_off : Icons.visibility,
                     color: colorItem,
                   ),
                 )
                 : null,
+      ),
+    );
+  }
+
+  static ElevatedButton buttonAuth({void Function()? onPressed, String? text}) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      child: titleBold(text: text, color: Colors.white),
+
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppColor.coklat,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
       ),
     );
   }
