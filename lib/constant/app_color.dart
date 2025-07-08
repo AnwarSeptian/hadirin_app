@@ -7,4 +7,6 @@ class AppColor {
   static const Color kuning = Color(0xffFAFFCA);
   static const Color coklat = Color(0xff504B38);
   static const Color brown = Color(0xffF8F3D9);
+  static const Color blue = Color(0xff007BFF);
+  static const Color bluelight = Color(0xffE6F0FA);
 }

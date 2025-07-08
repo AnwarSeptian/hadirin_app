@@ -94,7 +94,7 @@ class AppStyle {
       child: titleBold(text: text, color: Colors.white),
 
       style: ElevatedButton.styleFrom(
-        backgroundColor: AppColor.coklat,
+        backgroundColor: AppColor.blue,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
       ),
     );
