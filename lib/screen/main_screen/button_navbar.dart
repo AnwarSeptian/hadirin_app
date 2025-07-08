@@ -41,14 +41,14 @@ class _ButtonNavbarState extends State<ButtonNavbar>
       extendBody: true,
       bottomNavigationBar: CircleNavBar(
         activeIcons: const [
-          Icon(Icons.favorite, color: AppColor.coklat),
-          Icon(Icons.home, color: Colors.white),
           Icon(Icons.person, color: Colors.white),
+          Icon(Icons.home, color: Colors.white),
+          Icon(Icons.dehaze_sharp, color: Colors.white),
         ],
         inactiveIcons: [
-          AppStyle.titleBold(text: "History", color: Colors.white),
-          AppStyle.titleBold(text: "Home", color: Colors.white),
           AppStyle.titleBold(text: "Profile", color: Colors.white),
+          AppStyle.titleBold(text: "Home", color: Colors.white),
+          AppStyle.titleBold(text: "Dasboard", color: Colors.white),
         ],
         color: Color(0xff007BFF),
         height: 60,

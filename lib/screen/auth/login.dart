@@ -22,7 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.coklat,
+      backgroundColor: AppColor.blue,
       body: SafeArea(
         child: Stack(
           children: [
@@ -34,7 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   width: double.infinity,
                   height: 350,
                   decoration: BoxDecoration(
-                    color: AppColor.brown,
+                    color: AppColor.bluelight,
                     borderRadius: BorderRadius.vertical(
                       top: Radius.circular(100),
                     ),
