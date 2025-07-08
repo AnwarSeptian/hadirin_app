@@ -32,6 +32,7 @@ dependencies:
   flutter:
     sdk: flutter
   google_fonts: ^6.2.1
+  circle_nav_bar: ^2.2.0
 
 dev_dependencies:
 

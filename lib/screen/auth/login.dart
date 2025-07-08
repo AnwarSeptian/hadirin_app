@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hadirin_app/screen/auth/register.dart';
 import 'package:hadirin_app/constant/app_color.dart';
 import 'package:hadirin_app/constant/app_style.dart';
+import 'package:hadirin_app/screen/auth/register.dart';
 import 'package:hadirin_app/screen/main_screen/button_navbar.dart';
-import 'package:hadirin_app/screen/main_screen/home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

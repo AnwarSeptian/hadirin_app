@@ -1,8 +1,9 @@
+import 'package:circle_nav_bar/circle_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:hadirin_app/constant/app_color.dart';
+import 'package:hadirin_app/constant/app_style.dart';
 import 'package:hadirin_app/screen/main_screen/history_screen.dart';
 import 'package:hadirin_app/screen/main_screen/home_screen.dart';
-import 'package:hadirin_app/screen/main_screen/maps_screen.dart';
 import 'package:hadirin_app/screen/main_screen/profile_screen.dart';
 
 class ButtonNavbar extends StatefulWidget {
@@ -12,38 +13,62 @@ class ButtonNavbar extends StatefulWidget {
   State<ButtonNavbar> createState() => _ButtonNavbarState();
 }
 
-class _ButtonNavbarState extends State<ButtonNavbar> {
+class _ButtonNavbarState extends State<ButtonNavbar>
+    with SingleTickerProviderStateMixin {
+  int _tabIndex = 1;
+  int get tabIndex => _tabIndex;
+  set tabIndex(int v) {
+    _tabIndex = v;
+    setState(() {});
+  }
+
+  late PageController pageController;
   static const List<Widget> _screen = [
-    HomeScreen(),
-    MapsScreen(),
     HistoryScreen(),
+    HomeScreen(),
     ProfileScreen(),
   ];
-  int _buttonSelected = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    pageController = PageController(initialPage: _tabIndex);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: (value) {
-          setState(() {
-            _buttonSelected = value;
-          });
-        },
-        selectedItemColor: Color(0XFF3B3B1A),
-        unselectedItemColor: Color(0XFFAEC8A4),
-        currentIndex: _buttonSelected,
-        unselectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home_filled), label: "Home"),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.receipt_long),
-            label: "Pesanan",
-          ),
-          BottomNavigationBarItem(icon: Icon(Icons.person_3), label: "Profile"),
-          BottomNavigationBarItem(icon: Icon(Icons.map), label: "Profile"),
+      extendBody: true,
+      bottomNavigationBar: CircleNavBar(
+        activeIcons: const [
+          Icon(Icons.favorite, color: AppColor.coklat),
+          Icon(Icons.home, color: Colors.white),
+          Icon(Icons.person, color: Colors.white),
         ],
+        inactiveIcons: [
+          AppStyle.titleBold(text: "History", color: Colors.white),
+          AppStyle.titleBold(text: "Home", color: Colors.white),
+          AppStyle.titleBold(text: "Profile", color: Colors.white),
+        ],
+        color: Color(0xff007BFF),
+        height: 60,
+        circleWidth: 60,
+        activeIndex: tabIndex,
+        onTap: (index) {
+          tabIndex = index;
+          pageController.jumpToPage(tabIndex);
+        },
+        padding: const EdgeInsets.only(left: 16, right: 16, bottom: 20),
+        cornerRadius: const BorderRadius.only(
+          topLeft: Radius.circular(8),
+          topRight: Radius.circular(8),
+          bottomRight: Radius.circular(24),
+          bottomLeft: Radius.circular(24),
+        ),
+        shadowColor: Colors.lightBlueAccent,
+        elevation: 10,
       ),
-      body: _screen[_buttonSelected],
+      body: _screen[_tabIndex],
     );
   }
 }
