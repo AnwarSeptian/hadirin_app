@@ -1,5 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:hadirin_app/constant/app_style.dart';
+import 'package:hadirin_app/screen/main_screen/maps_screen.dart';
+import 'package:intl/intl.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -17,6 +21,23 @@ class _HomeScreenState extends State<HomeScreen> {
     {"date": "Tue, 12 April 2023", "in": "08:48", "out": "05:00"},
     {"date": "Mon, 11 April 2023", "in": "07:52", "out": "05:00"},
   ];
+  String _alamatSaatIni = "Alamat belum dipilih";
+  String _currentTime = DateFormat('HH.mm.ss').format(DateTime.now());
+  final String _currentDate = DateFormat(
+    'EEEE, d MMMM yyyy',
+    'id_ID',
+  ).format(DateTime.now());
+
+  @override
+  void initState() {
+    super.initState();
+    // Update waktu setiap detik
+    Timer.periodic(Duration(seconds: 1), (Timer t) {
+      setState(() {
+        _currentTime = DateFormat('HH.mm.ss').format(DateTime.now());
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,13 +66,27 @@ class _HomeScreenState extends State<HomeScreen> {
                       const Icon(Icons.location_on, color: Colors.black),
                       const SizedBox(width: 8),
                       Expanded(
-                        child: Text(
-                          "148 Rd No 12C Gulshan Dhaka - 1234",
-                          style: const TextStyle(color: Colors.black),
+                        child: AppStyle.normalTitle(
+                          text: _alamatSaatIni,
+                          color: Colors.black,
+                          fontSize: 14,
                         ),
                       ),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          final alamat = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const MapsScreen(),
+                            ),
+                          );
+                          if (alamat != null && alamat is String) {
+                            setState(() {
+                              _alamatSaatIni = alamat;
+                            });
+                          }
+                        },
+
                         child: AppStyle.titleBold(
                           text: "Open Maps",
                           fontSize: 12,
@@ -62,18 +97,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                const Text(
-                  "12:30 PM",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 36,
-                    fontWeight: FontWeight.bold,
-                  ),
+                AppStyle.titleBold(
+                  text: _currentTime,
+                  color: Colors.white,
+                  fontSize: 36,
                 ),
-                const Text(
-                  "Tuesday, March-25, 2025",
-                  style: TextStyle(color: Colors.white),
-                ),
+                AppStyle.normalTitle(text: _currentDate, color: Colors.white),
                 const SizedBox(height: 20),
               ],
             ),
@@ -92,7 +121,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      // check in
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => MapsScreen()),
+                      );
                     },
                     child: Container(
                       width: 100,

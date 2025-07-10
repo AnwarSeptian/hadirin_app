@@ -70,7 +70,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void register() async {
     print("Memulai proses registrasi...");
     try {
-      final res = await UserService.registerUser(
+      final response = await UserService.registerUser(
         email: emailController.text,
         name: nameController.text,
         password: passwordController.text,
@@ -79,29 +79,28 @@ class _RegisterScreenState extends State<RegisterScreen> {
         trainingId: selectedPelatihanId!,
       );
 
-      print("Response dari server: $res");
-
-      if (res["data"] != null) {
-        print("Token: ${res["data"]["token"]}");
+      if (response.data != null) {
+        print("Token: ${response.data!.token}");
         showTopSnackBar(
           Overlay.of(context),
-          CustomSnackBar.success(message: "Registrasi Berhasil"),
+          CustomSnackBar.success(
+            message: response.message ?? "Registrasi berhasil",
+          ),
         );
         Navigator.pop(context);
       } else {
+        // Registrasi gagal tapi tidak exception (status 200, tapi data null)
         String pesanError = "";
 
-        if (res["errors"] != null) {
-          pesanError = res["errors"].entries
+        if (response.errors != null) {
+          pesanError = response.errors!.entries
               .map((e) => e.value.join(', '))
               .join('\n');
-        } else if (res["message"] != null) {
-          pesanError = res["message"];
+        } else if (response.message != null) {
+          pesanError = response.message!;
         } else {
-          pesanError = "Terjadi kesalahan yang tidak diketahui.";
+          pesanError = "Terjadi kesalahan tidak diketahui.";
         }
-
-        print("Error saat register: $pesanError");
 
         showTopSnackBar(
           Overlay.of(context),
@@ -129,7 +128,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             children: [
               Column(
                 children: [
-                  SizedBox(height: 450),
+                  SizedBox(height: 400),
                   Container(
                     width: double.infinity,
                     height: 350,

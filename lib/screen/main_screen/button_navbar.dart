@@ -1,8 +1,7 @@
 import 'package:circle_nav_bar/circle_nav_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:hadirin_app/constant/app_color.dart';
 import 'package:hadirin_app/constant/app_style.dart';
-import 'package:hadirin_app/screen/main_screen/history_screen.dart';
+import 'package:hadirin_app/screen/main_screen/dashboard_screen.dart';
 import 'package:hadirin_app/screen/main_screen/home_screen.dart';
 import 'package:hadirin_app/screen/main_screen/profile_screen.dart';
 
@@ -24,9 +23,9 @@ class _ButtonNavbarState extends State<ButtonNavbar>
 
   late PageController pageController;
   static const List<Widget> _screen = [
-    HistoryScreen(),
-    HomeScreen(),
     ProfileScreen(),
+    HomeScreen(),
+    DashboardScreen(),
   ];
 
   @override
