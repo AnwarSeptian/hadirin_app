@@ -407,7 +407,7 @@ class DataProfile {
   BatchProfile batch;
   TrainingProfile training;
   dynamic jenisKelamin;
-  String profilePhoto;
+  String? profilePhoto;
 
   DataProfile({
     required this.id,
@@ -418,7 +418,7 @@ class DataProfile {
     required this.batch,
     required this.training,
     required this.jenisKelamin,
-    required this.profilePhoto,
+    this.profilePhoto,
   });
 
   factory DataProfile.fromJson(Map<String, dynamic> json) => DataProfile(

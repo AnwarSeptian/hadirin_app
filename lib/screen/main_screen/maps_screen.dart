@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:hadirin_app/api/attendace_api.dart';
+import 'package:hadirin_app/constant/app_color.dart';
+import 'package:hadirin_app/constant/app_style.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 class MapsScreen extends StatefulWidget {
   const MapsScreen({super.key});
@@ -15,6 +20,77 @@ class _MapsScreenState extends State<MapsScreen> {
   LatLng _currentPosition = LatLng(-6.200000, 106.816666);
   String _currentAddress = "Alamat tidak di temukan";
   Marker? _marker;
+  bool isLoading = false;
+
+  void handleCheckIn() async {
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+        position.latitude,
+        position.longitude,
+      );
+
+      String location =
+          "${placemarks[0].locality}, ${placemarks[0].administrativeArea}";
+      String address =
+          "${placemarks[0].street}, ${placemarks[0].subLocality}, ${placemarks[0].country}";
+
+      final response = await AttendaceApi.postCheckIn(
+        lat: position.latitude,
+        lng: position.longitude,
+        location: location,
+        address: address,
+      );
+      showTopSnackBar(
+        Overlay.of(context),
+        CustomSnackBar.success(message: "Checkin Berhasil"),
+      );
+    } catch (e) {
+      showTopSnackBar(
+        Overlay.of(context),
+        CustomSnackBar.error(message: e.toString()),
+      );
+    }
+  }
+
+  Future<void> handleCheckout() async {
+    setState(() => isLoading = true);
+
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+
+      final lat = position.latitude;
+      final lng = position.longitude;
+      final location = "$lat,$lng";
+      final address =
+          "Alamat otomatis"; // Nanti bisa pakai geocoding untuk alamat sebenarnya
+
+      final response = await AttendaceApi.postCheckout(
+        lat: lat,
+        lng: lng,
+        location: location,
+        address: address,
+      );
+      showTopSnackBar(
+        Overlay.of(context),
+        CustomSnackBar.success(message: response.message),
+      );
+    } catch (e) {
+      print("Error saat checkout: $e");
+      showTopSnackBar(
+        Overlay.of(context),
+        CustomSnackBar.error(message: e.toString()),
+      );
+    }
+
+    if (mounted) {
+      setState(() => isLoading = false);
+    }
+  }
 
   Future<void> _getCurrentLocation() async {
     bool serviceEnable = await Geolocator.isLocationServiceEnabled();
@@ -67,57 +143,66 @@ class _MapsScreenState extends State<MapsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Google Maps")),
-      body: Stack(
-        children: [
-          GoogleMap(
-            initialCameraPosition: CameraPosition(
-              target: _currentPosition,
-              zoom: 14,
-            ),
-            onMapCreated: (controller) {
-              mapController = controller;
+      appBar: AppBar(
+        title: Text("Attendace"),
+        actions: [
+          IconButton(
+            onPressed: () {
+              _getCurrentLocation();
             },
-            markers: _marker != null ? {_marker!} : {},
-            myLocationEnabled: true,
-            myLocationButtonEnabled: true,
-          ),
-          Positioned(
-            top: 16,
-            left: 16,
-            right: 16,
-            child: Card(
-              color: Colors.white,
-              elevation: 4,
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Text(_currentAddress, style: TextStyle(fontSize: 14)),
-              ),
-            ),
+            icon: Icon(Icons.refresh_sharp),
           ),
         ],
       ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: GoogleMap(
+          initialCameraPosition: CameraPosition(
+            target: _currentPosition,
+            zoom: 8,
+          ),
+          onMapCreated: (controller) {
+            mapController = controller;
+          },
+          markers: _marker != null ? {_marker!} : {},
+          myLocationEnabled: true,
+          myLocationButtonEnabled: true,
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          FloatingActionButton(
-            heroTag: 'refresh',
-            onPressed: _getCurrentLocation,
-            tooltip: "Refresh Lokasi",
-            child: Icon(Icons.refresh),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              AppStyle.titleBold(text: "Check in"),
+              AppStyle.titleBold(text: "Check Out"),
+            ],
           ),
-          SizedBox(height: 12),
-          FloatingActionButton(
-            heroTag: 'select',
-            onPressed: () {
-              Navigator.pop(
-                context,
-                _currentAddress,
-              ); // ← Kirim alamat ke halaman sebelumnya
-            },
-            tooltip: "Pilih Alamat Ini",
-            backgroundColor: Colors.green,
-            child: Icon(Icons.check),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              FloatingActionButton(
+                heroTag: 'select',
+                onPressed: () {
+                  handleCheckIn();
+                },
+                tooltip: "Pilih Alamat Ini",
+                backgroundColor: AppColor.blue,
+                child: Icon(Icons.fingerprint_sharp, color: Colors.white),
+              ),
+
+              FloatingActionButton(
+                heroTag: 'select',
+                onPressed: () {
+                  handleCheckout();
+                },
+                tooltip: "Pilih Alamat Ini",
+                backgroundColor: AppColor.coklat,
+                child: Icon(Icons.fingerprint_sharp, color: Colors.white),
+              ),
+            ],
           ),
         ],
       ),

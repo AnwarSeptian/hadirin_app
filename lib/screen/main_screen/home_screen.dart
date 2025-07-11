@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:hadirin_app/api/attendace_api.dart';
 import 'package:hadirin_app/constant/app_style.dart';
+import 'package:hadirin_app/model/attendace_response.dart';
 import 'package:hadirin_app/screen/main_screen/maps_screen.dart';
 import 'package:intl/intl.dart';
 
@@ -13,14 +15,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final List<Map<String, String>> attendanceHistory = [
-    {"date": "Mon, 18 April 2023", "in": "08:00", "out": "05:00"},
-    {"date": "Fri, 15 April 2023", "in": "08:52", "out": "05:00"},
-    {"date": "Thu, 14 April 2023", "in": "07:45", "out": "05:00"},
-    {"date": "Wed, 13 April 2023", "in": "07:55", "out": "05:00"},
-    {"date": "Tue, 12 April 2023", "in": "08:48", "out": "05:00"},
-    {"date": "Mon, 11 April 2023", "in": "07:52", "out": "05:00"},
-  ];
+  List<DataAttendace> attendaceHistory = [];
+  late Timer _clockTimer;
+  bool isLoading = true;
   String _alamatSaatIni = "Alamat belum dipilih";
   String _currentTime = DateFormat('HH.mm.ss').format(DateTime.now());
   final String _currentDate = DateFormat(
@@ -31,12 +28,25 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    // Update waktu setiap detik
-    Timer.periodic(Duration(seconds: 1), (Timer t) {
+    fetchAttendance();
+    _clockTimer = Timer.periodic(Duration(seconds: 1), (Timer t) {
       setState(() {
         _currentTime = DateFormat('HH.mm.ss').format(DateTime.now());
       });
     });
+  }
+
+  Future<void> fetchAttendance() async {
+    try {
+      final response = await AttendaceApi.historyAbsen();
+      setState(() {
+        attendaceHistory = response.data;
+        isLoading = false;
+      });
+    } catch (e) {
+      print("Error fetching attendance: $e");
+      setState(() => isLoading = false);
+    }
   }
 
   @override
@@ -189,81 +199,84 @@ class _HomeScreenState extends State<HomeScreen> {
 
           // Attendance History
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Container(
-                padding: const EdgeInsets.all(16),
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        const Text(
-                          "🕒 Attendance History",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
+            child:
+                isLoading
+                    ? Center(child: CircularProgressIndicator())
+                    : attendaceHistory.isEmpty
+                    ? Center(child: Text("Belu, ada data absensi"))
+                    : Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(30),
                           ),
                         ),
-                        Spacer(),
-                        TextButton(
-                          onPressed: () {},
-                          child: AppStyle.titleBold(
-                            text: "View All",
-                            fontSize: 14,
-                            color: Color(0xff007BFF),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: attendanceHistory.length,
-                        itemBuilder: (context, index) {
-                          final item = attendanceHistory[index];
-                          final late =
-                              int.tryParse(item['in']!.split(":")[0])! > 8;
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 6.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
                               children: [
-                                Text(item['date']!),
-                                Row(
-                                  children: [
-                                    Text(
-                                      item['in']!,
-                                      style: TextStyle(
-                                        color: late ? Colors.red : Colors.black,
-                                        fontWeight:
-                                            late
-                                                ? FontWeight.bold
-                                                : FontWeight.normal,
-                                      ),
-                                    ),
-                                    const Text(" - "),
-                                    Text(
-                                      item['out']!,
-                                      style: const TextStyle(
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  ],
+                                const Text(
+                                  "🕒 Attendance History",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                Spacer(),
+                                TextButton(
+                                  onPressed: () {},
+                                  child: AppStyle.titleBold(
+                                    text: "View All",
+                                    fontSize: 14,
+                                    color: Color(0xff007BFF),
+                                  ),
                                 ),
                               ],
                             ),
-                          );
-                        },
+                            Expanded(
+                              child: ListView.builder(
+                                itemCount: attendaceHistory.length,
+                                itemBuilder: (context, index) {
+                                  final item = attendaceHistory[index];
+                                  final DateFormatted = DateFormat(
+                                    'EEE, dd MMM yyyy',
+                                  ).format(item.attendanceDate);
+                                  final checkIn = item.checkInTime ?? "-";
+                                  final checkOut = item.checkOutTime ?? "-";
+                                  final late =
+                                      int.tryParse(checkIn.split(":")[0]) ??
+                                      0 > 8;
+                                  return Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 6.0,
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        AppStyle.normalTitle(
+                                          text: DateFormatted,
+                                        ),
+                                        AppStyle.normalTitle(text: checkIn),
+
+                                        const Text(" - "),
+                                        AppStyle.normalTitle(
+                                          text: checkOut.toString(),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ),
           ),
         ],
       ),

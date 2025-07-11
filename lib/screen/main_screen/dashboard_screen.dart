@@ -58,9 +58,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        AppStyle.normalTitle(
-                          text: profileUser?.name ?? "Loading..",
-                          color: Colors.white,
+                        Row(
+                          children: [
+                            AppStyle.normalTitle(
+                              text: profileUser?.name ?? "Loading..",
+                              color: Colors.white,
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                loadData();
+                              },
+                              icon: Icon(
+                                Icons.refresh_sharp,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
                         ),
                         Text(
                           "Best wishes for your day!",
