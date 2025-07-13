@@ -75,6 +75,33 @@ class AttendaceApi {
     }
   }
 
+  static Future<LeaveResponse> postIzin({
+    required String alasan,
+    required String tanggal,
+  }) async {
+    String? token = await PreferenceHandler.getToken();
+    final now = DateTime.now();
+
+    final response = await http.post(
+      Uri.parse(Endpoint.leave),
+      headers: {
+        "Accept": "application/json",
+        "Authorization": "Bearer $token",
+        "Content-Type": "application/json",
+      },
+      body: jsonEncode({"date": tanggal, "alasan_izin": alasan}),
+    );
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      print("Respon Izin: ${response.body}");
+      return leaveResponseFromJson(response.body);
+    } else {
+      print("Error Izin: ${response.body}");
+      throw jsonDecode(response.body)['message'] ??
+          'Terjadi kesalahan saat mengirim izin';
+    }
+  }
+
   static Future<AttendaceResponses> historyAbsen() async {
     String? token = await PreferenceHandler.getToken();
     final response = await http.get(
@@ -86,6 +113,22 @@ class AttendaceApi {
     if (response.statusCode == 200) {
       print(attendaceResponsesFromJson(response.body).toJson());
       return attendaceResponsesFromJson(response.body);
+    } else {
+      throw Exception("Gagal Memuat data: ${response.body}");
+    }
+  }
+
+  static Future<StatistikAbsenResponse> statistikAbsen() async {
+    String? token = await PreferenceHandler.getToken();
+    final response = await http.get(
+      Uri.parse(Endpoint.statistikAbsen),
+      headers: {"Accept": "application/json", "Authorization": "Bearer $token"},
+    );
+    print("Respons :${response.body}");
+
+    if (response.statusCode == 200) {
+      print(statistikAbsenResponseFromJson(response.body).toJson());
+      return statistikAbsenResponseFromJson(response.body);
     } else {
       throw Exception("Gagal Memuat data: ${response.body}");
     }

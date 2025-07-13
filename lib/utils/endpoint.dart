@@ -9,4 +9,10 @@ class Endpoint {
   static const String checkin = "$absen/check-in";
   static const String checkout = "$absen/check-out";
   static const String history = "$absen/history";
+  static const String leave = "$baseUrl/izin";
+  static const String updateProfile = "$profile/photo";
+  static const String user = "$baseUrl/users";
+  static const String statistikAbsen = "$absen/stats";
+  static const String baseImageUrl =
+      "https://appabsensi.mobileprojp.com/public/";
 }

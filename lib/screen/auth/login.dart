@@ -149,26 +149,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             SizedBox(height: 18),
 
-                            Row(
-                              children: [
-                                Container(
-                                  height: 20,
-                                  width: 20,
-                                  decoration: BoxDecoration(
-                                    color: Color(0xffE6E6E6),
-                                  ),
-                                  child: Checkbox(
-                                    value: rememberMe,
-                                    onChanged: (value) {},
-                                  ),
-                                ),
-                                SizedBox(width: 4),
-                                AppStyle.normalTitle(
-                                  text: "Remember me",
-                                  fontWeight: FontWeight.w300,
-                                ),
-                              ],
-                            ),
                             SizedBox(height: 44),
 
                             SizedBox(

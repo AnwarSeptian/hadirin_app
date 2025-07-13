@@ -484,6 +484,42 @@ class BatchProfile {
   };
 }
 
+// To parse this JSON data, do
+//
+//     final photoProfileResponse = photoProfileResponseFromJson(jsonString);
+
+UploadProfileResponse photoProfileResponseFromJson(String str) =>
+    UploadProfileResponse.fromJson(json.decode(str));
+
+String photoProfileResponseToJson(UploadProfileResponse data) =>
+    json.encode(data.toJson());
+
+class UploadProfileResponse {
+  String message;
+  DataPhoto data;
+
+  UploadProfileResponse({required this.message, required this.data});
+
+  factory UploadProfileResponse.fromJson(Map<String, dynamic> json) =>
+      UploadProfileResponse(
+        message: json["message"],
+        data: DataPhoto.fromJson(json["data"]),
+      );
+
+  Map<String, dynamic> toJson() => {"message": message, "data": data.toJson()};
+}
+
+class DataPhoto {
+  String profilePhoto;
+
+  DataPhoto({required this.profilePhoto});
+
+  factory DataPhoto.fromJson(Map<String, dynamic> json) =>
+      DataPhoto(profilePhoto: json["profile_photo"]);
+
+  Map<String, dynamic> toJson() => {"profile_photo": profilePhoto};
+}
+
 class TrainingProfile {
   int id;
   String title;
@@ -527,4 +563,193 @@ class TrainingProfile {
     "created_at": createdAt.toIso8601String(),
     "updated_at": updatedAt.toIso8601String(),
   };
+}
+// To parse this JSON data, do
+//
+//     final editProfileResponse = editProfileResponseFromJson(jsonString);
+
+EditProfileResponse editProfileResponseFromJson(String str) =>
+    EditProfileResponse.fromJson(json.decode(str));
+
+String editProfileResponseToJson(EditProfileResponse data) =>
+    json.encode(data.toJson());
+
+class EditProfileResponse {
+  String message;
+  EditProfileData data;
+
+  EditProfileResponse({required this.message, required this.data});
+
+  factory EditProfileResponse.fromJson(Map<String, dynamic> json) =>
+      EditProfileResponse(
+        message: json["message"],
+        data: EditProfileData.fromJson(json["data"]),
+      );
+
+  Map<String, dynamic> toJson() => {"message": message, "data": data.toJson()};
+}
+
+class EditProfileData {
+  int id;
+  String name;
+  String email;
+  dynamic emailVerifiedAt;
+  DateTime createdAt;
+  DateTime updatedAt;
+  String batchId;
+  String trainingId;
+  String jenisKelamin;
+  String profilePhoto;
+  dynamic onesignalPlayerId;
+
+  EditProfileData({
+    required this.id,
+    required this.name,
+    required this.email,
+    required this.emailVerifiedAt,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.batchId,
+    required this.trainingId,
+    required this.jenisKelamin,
+    required this.profilePhoto,
+    required this.onesignalPlayerId,
+  });
+
+  factory EditProfileData.fromJson(Map<String, dynamic> json) =>
+      EditProfileData(
+        id: json["id"],
+        name: json["name"],
+        email: json["email"],
+        emailVerifiedAt: json["email_verified_at"],
+        createdAt: DateTime.parse(json["created_at"]),
+        updatedAt: DateTime.parse(json["updated_at"]),
+        batchId: json["batch_id"],
+        trainingId: json["training_id"],
+        jenisKelamin: json["jenis_kelamin"],
+        profilePhoto: json["profile_photo"],
+        onesignalPlayerId: json["onesignal_player_id"],
+      );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "name": name,
+    "email": email,
+    "email_verified_at": emailVerifiedAt,
+    "created_at": createdAt.toIso8601String(),
+    "updated_at": updatedAt.toIso8601String(),
+    "batch_id": batchId,
+    "training_id": trainingId,
+    "jenis_kelamin": jenisKelamin,
+    "profile_photo": profilePhoto,
+    "onesignal_player_id": onesignalPlayerId,
+  };
+}
+
+// To parse this JSON data, do
+//
+//     final userListResponse = userListResponseFromJson(jsonString);
+
+UserListResponse userListResponseFromJson(String str) =>
+    UserListResponse.fromJson(json.decode(str));
+
+String userListResponseToJson(UserListResponse data) =>
+    json.encode(data.toJson());
+
+class UserListResponse {
+  String message;
+  List<DataUser> data;
+
+  UserListResponse({required this.message, required this.data});
+
+  factory UserListResponse.fromJson(Map<String, dynamic> json) =>
+      UserListResponse(
+        message: json["message"],
+        data: List<DataUser>.from(
+          json["data"].map((x) => DataUser.fromJson(x)),
+        ),
+      );
+
+  Map<String, dynamic> toJson() => {
+    "message": message,
+    "data": List<dynamic>.from(data.map((x) => x.toJson())),
+  };
+}
+
+class DataUser {
+  int id;
+  String name;
+  String email;
+  dynamic emailVerifiedAt;
+  DateTime createdAt;
+  DateTime updatedAt;
+  String batchId;
+  String trainingId;
+  JenisKelamin? jenisKelamin;
+  String? profilePhoto;
+  String? onesignalPlayerId;
+
+  DataUser({
+    required this.id,
+    required this.name,
+    required this.email,
+    required this.emailVerifiedAt,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.batchId,
+    required this.trainingId,
+    required this.jenisKelamin,
+    required this.profilePhoto,
+    required this.onesignalPlayerId,
+  });
+
+  factory DataUser.fromJson(Map<String, dynamic> json) => DataUser(
+    id: json["id"],
+    name: json["name"],
+    email: json["email"],
+    emailVerifiedAt: json["email_verified_at"],
+    createdAt: DateTime.parse(json["created_at"]),
+    updatedAt: DateTime.parse(json["updated_at"]),
+    batchId: json["batch_id"],
+    trainingId: json["training_id"],
+    jenisKelamin:
+        json["jenis_kelamin"] != null
+            ? jenisKelaminValues.map[json["jenis_kelamin"]]
+            : null,
+    profilePhoto: json["profile_photo"],
+    onesignalPlayerId: json["onesignal_player_id"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "name": name,
+    "email": email,
+    "email_verified_at": emailVerifiedAt,
+    "created_at": createdAt.toIso8601String(),
+    "updated_at": updatedAt.toIso8601String(),
+    "batch_id": batchId,
+    "training_id": trainingId,
+    "jenis_kelamin": jenisKelaminValues.reverse[jenisKelamin],
+    "profile_photo": profilePhoto,
+    "onesignal_player_id": onesignalPlayerId,
+  };
+}
+
+enum JenisKelamin { L, P }
+
+final jenisKelaminValues = EnumValues({
+  "L": JenisKelamin.L,
+  "P": JenisKelamin.P,
+});
+
+class EnumValues<T> {
+  Map<String, T> map;
+  late Map<T, String> reverseMap;
+
+  EnumValues(this.map);
+
+  Map<T, String> get reverse {
+    reverseMap = map.map((k, v) => MapEntry(v, k));
+    return reverseMap;
+  }
 }
