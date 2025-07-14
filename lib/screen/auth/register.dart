@@ -124,228 +124,234 @@ class _RegisterScreenState extends State<RegisterScreen> {
       body: Form(
         key: _formKey,
         child: SafeArea(
-          child: Stack(
-            children: [
-              Column(
-                children: [
-                  SizedBox(height: 400),
-                  Container(
-                    width: double.infinity,
-                    height: 350,
-                    decoration: BoxDecoration(
-                      color: AppColor.brown,
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(100),
+          child: SingleChildScrollView(
+            child: Stack(
+              children: [
+                Column(
+                  children: [
+                    SizedBox(height: 400),
+                    Container(
+                      width: double.infinity,
+                      height: 350,
+                      decoration: BoxDecoration(
+                        color: AppColor.brown,
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(100),
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              Center(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      AppStyle.titleBold(
-                        color: Color(0xFFffffff),
-                        fontSize: 32,
-                        text: "Register",
-                      ),
-                      SizedBox(height: 14),
-                      AppStyle.normalTitle(
-                        color: Color(0xFFffffff),
-                        text: "Register your account",
-                      ),
-                      SizedBox(height: 24),
-                      Container(
-                        width: 351,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(28),
+                  ],
+                ),
+                Center(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        AppStyle.titleBold(
+                          color: Color(0xFFffffff),
+                          fontSize: 32,
+                          text: "Register",
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(20),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              AppStyle.normalTitle(
-                                color: AppColor.coklat,
-                                text: "Nama",
-                              ),
-                              SizedBox(height: 14),
-                              AppStyle.TextField(
-                                controller: nameController,
-                                color: Color(0xffE6E6E6),
-                                colorItem: AppColor.coklat,
-                              ),
-                              SizedBox(height: 14),
-                              AppStyle.normalTitle(
-                                color: AppColor.coklat,
-                                text: "Email",
-                              ),
-                              SizedBox(height: 14),
-                              AppStyle.TextField(
-                                controller: emailController,
-                                color: Color(0xffE6E6E6),
-                                colorItem: AppColor.coklat,
-                              ),
-                              SizedBox(height: 14),
-                              AppStyle.normalTitle(
-                                color: AppColor.coklat,
-                                text: "Password",
-                              ),
-                              SizedBox(height: 14),
-                              AppStyle.TextField(
-                                controller: passwordController,
-                                color: Color(0xffE6E6E6),
-                                isPassword: true,
-                                isVisibility: passwordVisible,
-                                onPressed: () {
-                                  setState(() {
-                                    passwordVisible = !passwordVisible;
-                                  });
-                                },
-                              ),
+                        SizedBox(height: 14),
+                        AppStyle.normalTitle(
+                          color: Color(0xFFffffff),
+                          text: "Register your account",
+                        ),
+                        SizedBox(height: 24),
+                        Container(
+                          width: 351,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(28),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(20),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                AppStyle.normalTitle(
+                                  color: AppColor.coklat,
+                                  text: "Nama",
+                                ),
+                                SizedBox(height: 14),
+                                AppStyle.TextField(
+                                  controller: nameController,
+                                  color: Color(0xffE6E6E6),
+                                  colorItem: AppColor.coklat,
+                                ),
+                                SizedBox(height: 14),
+                                AppStyle.normalTitle(
+                                  color: AppColor.coklat,
+                                  text: "Email",
+                                ),
+                                SizedBox(height: 14),
+                                AppStyle.TextField(
+                                  controller: emailController,
+                                  color: Color(0xffE6E6E6),
+                                  colorItem: AppColor.coklat,
+                                ),
+                                SizedBox(height: 14),
+                                AppStyle.normalTitle(
+                                  color: AppColor.coklat,
+                                  text: "Password",
+                                ),
+                                SizedBox(height: 14),
+                                AppStyle.TextField(
+                                  controller: passwordController,
+                                  color: Color(0xffE6E6E6),
+                                  isPassword: true,
+                                  isVisibility: passwordVisible,
+                                  onPressed: () {
+                                    setState(() {
+                                      passwordVisible = !passwordVisible;
+                                    });
+                                  },
+                                ),
 
-                              // 🔽 Gender Section Start
-                              SizedBox(height: 20),
-                              AppStyle.normalTitle(
-                                color: AppColor.coklat,
-                                text: "Jenis Kelamin",
-                              ),
-                              RadioListTile<String>(
-                                title: Text('Laki-laki'),
-                                value: 'L',
-                                groupValue: selectedGender,
-                                activeColor: AppColor.coklat,
-                                onChanged: (value) {
-                                  setState(() {
-                                    selectedGender = value!;
-                                  });
-                                },
-                              ),
-                              RadioListTile<String>(
-                                title: Text('Perempuan'),
-                                value: 'P',
-                                groupValue: selectedGender,
-                                activeColor: AppColor.coklat,
-                                onChanged: (value) {
-                                  setState(() {
-                                    selectedGender = value!;
-                                  });
-                                },
-                              ),
-                              AppStyle.normalTitle(
-                                color: AppColor.coklat,
-                                text: "Jenis Pelatihan",
-                              ),
-                              isLoadingPelatihan
-                                  ? Center(child: CircularProgressIndicator())
-                                  : DropdownButtonFormField<int>(
-                                    isExpanded: true,
-                                    value: selectedPelatihanId,
-                                    decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor: Color(0xffE6E6E6),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                        borderSide: BorderSide.none,
+                                // 🔽 Gender Section Start
+                                SizedBox(height: 20),
+                                AppStyle.normalTitle(
+                                  color: AppColor.coklat,
+                                  text: "Jenis Kelamin",
+                                ),
+                                RadioListTile<String>(
+                                  title: Text('Laki-laki'),
+                                  value: 'L',
+                                  groupValue: selectedGender,
+                                  activeColor: AppColor.coklat,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      selectedGender = value!;
+                                    });
+                                  },
+                                ),
+                                RadioListTile<String>(
+                                  title: Text('Perempuan'),
+                                  value: 'P',
+                                  groupValue: selectedGender,
+                                  activeColor: AppColor.coklat,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      selectedGender = value!;
+                                    });
+                                  },
+                                ),
+                                AppStyle.normalTitle(
+                                  color: AppColor.coklat,
+                                  text: "Jenis Pelatihan",
+                                ),
+                                isLoadingPelatihan
+                                    ? Center(child: CircularProgressIndicator())
+                                    : DropdownButtonFormField<int>(
+                                      isExpanded: true,
+                                      value: selectedPelatihanId,
+                                      decoration: InputDecoration(
+                                        filled: true,
+                                        fillColor: Color(0xffE6E6E6),
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
+                                          borderSide: BorderSide.none,
+                                        ),
+                                      ),
+                                      items:
+                                          pelatihanList.map((pelatihan) {
+                                            return DropdownMenuItem<int>(
+                                              value: pelatihan.id,
+                                              child: Text(
+                                                pelatihan.title,
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 1,
+                                              ),
+                                            );
+                                          }).toList(),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          selectedPelatihanId = value!;
+                                        });
+                                      },
+                                      validator:
+                                          (value) =>
+                                              value == null
+                                                  ? 'Jenis pelatihan harus dipilih'
+                                                  : null,
+                                    ),
+                                SizedBox(height: 20),
+                                AppStyle.normalTitle(
+                                  color: AppColor.coklat,
+                                  text: "Pilih Batch",
+                                ),
+                                DropdownButtonFormField<int>(
+                                  isExpanded: true,
+                                  value: selectedBatchId,
+                                  decoration: InputDecoration(
+                                    filled: true,
+                                    fillColor: Color(0xffE6E6E6),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                      borderSide: BorderSide.none,
+                                    ),
+                                  ),
+                                  items:
+                                      batchList.map((batch) {
+                                        return DropdownMenuItem<int>(
+                                          value: batch.id,
+                                          child: Text(
+                                            "Batch ${batch.batchKe} (${batch.startDate.year})",
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 1,
+                                          ),
+                                        );
+                                      }).toList(),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      selectedBatchId = value;
+                                    });
+                                  },
+                                  validator:
+                                      (value) =>
+                                          value == null
+                                              ? 'Batch harus dipilih'
+                                              : null,
+                                ),
+                                SizedBox(height: 34),
+                                SizedBox(
+                                  height: 56,
+                                  width: double.infinity,
+                                  child: AppStyle.buttonAuth(
+                                    onPressed: () {
+                                      if (_formKey.currentState!.validate()) {
+                                        register();
+                                      }
+                                    },
+                                    text: "Register",
+                                  ),
+                                ),
+                                SizedBox(height: 12),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    AppStyle.normalTitle(text: "Have account?"),
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: AppStyle.titleBold(
+                                        text: "Sign in",
                                       ),
                                     ),
-                                    items:
-                                        pelatihanList.map((pelatihan) {
-                                          return DropdownMenuItem<int>(
-                                            value: pelatihan.id,
-                                            child: Text(
-                                              pelatihan.title,
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 1,
-                                            ),
-                                          );
-                                        }).toList(),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        selectedPelatihanId = value!;
-                                      });
-                                    },
-                                    validator:
-                                        (value) =>
-                                            value == null
-                                                ? 'Jenis pelatihan harus dipilih'
-                                                : null,
-                                  ),
-                              SizedBox(height: 20),
-                              AppStyle.normalTitle(
-                                color: AppColor.coklat,
-                                text: "Pilih Batch",
-                              ),
-                              DropdownButtonFormField<int>(
-                                isExpanded: true,
-                                value: selectedBatchId,
-                                decoration: InputDecoration(
-                                  filled: true,
-                                  fillColor: Color(0xffE6E6E6),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                    borderSide: BorderSide.none,
-                                  ),
+                                  ],
                                 ),
-                                items:
-                                    batchList.map((batch) {
-                                      return DropdownMenuItem<int>(
-                                        value: batch.id,
-                                        child: Text(
-                                          "Batch ${batch.batchKe} (${batch.startDate.year})",
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 1,
-                                        ),
-                                      );
-                                    }).toList(),
-                                onChanged: (value) {
-                                  setState(() {
-                                    selectedBatchId = value;
-                                  });
-                                },
-                                validator:
-                                    (value) =>
-                                        value == null
-                                            ? 'Batch harus dipilih'
-                                            : null,
-                              ),
-                              SizedBox(height: 34),
-                              SizedBox(
-                                height: 56,
-                                width: double.infinity,
-                                child: AppStyle.buttonAuth(
-                                  onPressed: () {
-                                    if (_formKey.currentState!.validate()) {
-                                      register();
-                                    }
-                                  },
-                                  text: "Register",
-                                ),
-                              ),
-                              SizedBox(height: 12),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  AppStyle.normalTitle(text: "Have account?"),
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: AppStyle.titleBold(text: "Sign in"),
-                                  ),
-                                ],
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

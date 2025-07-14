@@ -75,124 +75,127 @@ class _LoginScreenState extends State<LoginScreen> {
       child: Scaffold(
         backgroundColor: AppColor.blue,
         body: SafeArea(
-          child: Stack(
-            children: [
-              Column(
-                children: [
-                  Spacer(),
-                  Container(
-                    width: double.infinity,
-                    height: 350,
-                    decoration: BoxDecoration(
-                      color: AppColor.bluelight,
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(100),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Center(
-                child: Column(
+          child: SingleChildScrollView(
+            child: Stack(
+              children: [
+                Column(
                   children: [
-                    Spacer(),
-                    AppStyle.titleBold(
-                      color: Color(0xFFffffff),
-                      fontSize: 32,
-                      text: "Welcome Back",
-                    ),
-                    SizedBox(height: 14),
-                    AppStyle.normalTitle(
-                      color: Color(0xFFffffff),
-                      text: "Login to your account",
-                    ),
-                    SizedBox(height: 58),
+                    SizedBox(height: 500),
                     Container(
-                      height: 500,
-                      width: 351,
+                      width: double.infinity,
+                      height: 350,
                       decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(height: 10),
-                            AppStyle.normalTitle(
-                              color: AppColor.coklat,
-                              text: "Email",
-                            ),
-                            SizedBox(height: 14),
-                            AppStyle.TextField(
-                              controller: emailController,
-                              color: Color(0xffE6E6E6),
-                              colorItem: AppColor.coklat,
-                            ),
-                            SizedBox(height: 14),
-                            AppStyle.normalTitle(
-                              color: AppColor.coklat,
-                              text: "Password",
-                            ),
-                            SizedBox(height: 14),
-                            AppStyle.TextField(
-                              controller: passwordController,
-                              color: Color(0xffE6E6E6),
-                              isPassword: true,
-                              isVisibility: passwordVisible,
-                              onPressed: () {
-                                setState(() {
-                                  passwordVisible = !passwordVisible;
-                                });
-                              },
-                            ),
-                            SizedBox(height: 18),
-
-                            SizedBox(height: 44),
-
-                            SizedBox(
-                              height: 56,
-                              width: double.infinity,
-                              child: AppStyle.buttonAuth(
-                                onPressed: () {
-                                  if (_formKey.currentState!.validate()) {
-                                    login();
-                                    print('Email : ${emailController.text}');
-                                  }
-                                },
-                                text: "Login",
-                              ),
-                            ),
-                            SizedBox(height: 18),
-
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                AppStyle.normalTitle(
-                                  text: "Don't have account?",
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => RegisterScreen(),
-                                      ),
-                                    );
-                                  },
-                                  child: AppStyle.titleBold(text: "Sign Up"),
-                                ),
-                              ],
-                            ),
-                          ],
+                        color: AppColor.bluelight,
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(100),
                         ),
                       ),
                     ),
                   ],
                 ),
-              ),
-            ],
+                Center(
+                  child: Column(
+                    children: [
+                      SizedBox(height: 200),
+                      AppStyle.titleBold(
+                        color: Color(0xFFffffff),
+                        fontSize: 32,
+                        text: "Welcome Back",
+                      ),
+                      SizedBox(height: 14),
+                      AppStyle.normalTitle(
+                        color: Color(0xFFffffff),
+                        text: "Login to your account",
+                      ),
+                      SizedBox(height: 58),
+                      Container(
+                        height: 500,
+                        width: 351,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(height: 10),
+                              AppStyle.normalTitle(
+                                color: AppColor.coklat,
+                                text: "Email",
+                              ),
+                              SizedBox(height: 14),
+                              AppStyle.TextField(
+                                controller: emailController,
+                                color: Color(0xffE6E6E6),
+                                colorItem: AppColor.coklat,
+                              ),
+                              SizedBox(height: 14),
+                              AppStyle.normalTitle(
+                                color: AppColor.coklat,
+                                text: "Password",
+                              ),
+                              SizedBox(height: 14),
+                              AppStyle.TextField(
+                                controller: passwordController,
+                                color: Color(0xffE6E6E6),
+                                isPassword: true,
+                                isVisibility: passwordVisible,
+                                onPressed: () {
+                                  setState(() {
+                                    passwordVisible = !passwordVisible;
+                                  });
+                                },
+                              ),
+                              SizedBox(height: 18),
+
+                              SizedBox(height: 44),
+
+                              SizedBox(
+                                height: 56,
+                                width: double.infinity,
+                                child: AppStyle.buttonAuth(
+                                  onPressed: () {
+                                    if (_formKey.currentState!.validate()) {
+                                      login();
+                                      print('Email : ${emailController.text}');
+                                    }
+                                  },
+                                  text: "Login",
+                                ),
+                              ),
+                              SizedBox(height: 18),
+
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  AppStyle.normalTitle(
+                                    text: "Don't have account?",
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder:
+                                              (context) => RegisterScreen(),
+                                        ),
+                                      );
+                                    },
+                                    child: AppStyle.titleBold(text: "Sign Up"),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

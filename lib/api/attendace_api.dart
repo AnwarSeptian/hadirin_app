@@ -15,7 +15,7 @@ class AttendaceApi {
   }) async {
     String? token = await PreferenceHandler.getToken();
     final now = DateTime.now();
-    final checkInTime = '${now.hour}:${now.minute.toString().padLeft(2, '0')}';
+    final checkInTime = DateFormat('HH:mm').format(DateTime.now());
     final response = await http.post(
       Uri.parse(Endpoint.checkin),
       headers: {
@@ -49,7 +49,7 @@ class AttendaceApi {
   }) async {
     String? token = await PreferenceHandler.getToken();
     final now = DateTime.now();
-    final checkInTime = '${now.hour}:${now.minute.toString().padLeft(2, '0')}';
+    final checkInTime = DateFormat('HH:mm').format(DateTime.now());
     final response = await http.post(
       Uri.parse(Endpoint.checkout),
       headers: {

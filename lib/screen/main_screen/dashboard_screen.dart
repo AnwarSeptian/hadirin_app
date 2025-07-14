@@ -7,9 +7,6 @@ import 'package:hadirin_app/model/attendace_response.dart';
 import 'package:hadirin_app/model/batch_response.dart';
 import 'package:hadirin_app/model/training_respons.dart';
 import 'package:hadirin_app/model/user_response.dart';
-import 'package:hadirin_app/screen/main_screen/history_attendace.dart';
-import 'package:hadirin_app/screen/main_screen/profile_screen.dart';
-import 'package:hadirin_app/screen/main_screen/user_list.dart';
 import 'package:hadirin_app/utils/endpoint.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -110,7 +107,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    AppStyle.titleBold(text: "Data Pelatihan", fontSize: 20),
+                    AppStyle.titleBold(text: "Info Pelatihan", fontSize: 20),
                   ],
                 ),
               ),
@@ -122,17 +119,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => UserListScreen(),
-                          ),
-                        );
-                      },
-                      child: _buildStatCard(Icons.groups_sharp, "List User"),
-                    ),
                     GestureDetector(
                       onTap: () async {
                         showDialog(

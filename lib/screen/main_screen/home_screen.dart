@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:hadirin_app/api/attendace_api.dart';
 import 'package:hadirin_app/constant/app_style.dart';
@@ -41,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _showIzinDialog(BuildContext context) {
-    final TextEditingController _alasanController = TextEditingController();
+    final TextEditingController alasanController = TextEditingController();
     DateTime? selectedDate;
 
     showDialog(
@@ -96,7 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   const SizedBox(height: 12),
                   TextField(
-                    controller: _alasanController,
+                    controller: alasanController,
                     decoration: const InputDecoration(
                       hintText: "Masukkan alasan izin...",
                       border: OutlineInputBorder(),
@@ -124,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     Navigator.pop(context);
                     _ajukanIzin(
-                      alasan: _alasanController.text.trim(),
+                      alasan: alasanController.text.trim(),
                       tanggal: selectedDate!,
                     );
                   },
@@ -395,7 +396,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
 
-          const SizedBox(height: 20),
+          const SizedBox(height: 12),
 
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
