@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:hadirin_app/api/attendace_api.dart';
+import 'package:hadirin_app/constant/app_color.dart';
 import 'package:hadirin_app/constant/app_style.dart';
 import 'package:hadirin_app/model/attendace_response.dart';
 import 'package:hadirin_app/screen/main_screen/history_attendace.dart';
@@ -47,91 +48,217 @@ class _HomeScreenState extends State<HomeScreen> {
 
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) {
         return StatefulBuilder(
           builder: (context, setState) {
-            return AlertDialog(
-              title: const Text("Ajukan Izin"),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  InkWell(
-                    onTap: () async {
-                      final pickedDate = await showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime.now().subtract(
-                          const Duration(days: 30),
-                        ),
-                        lastDate: DateTime.now().add(const Duration(days: 30)),
-                        locale: const Locale("id", "ID"),
-                      );
-                      if (pickedDate != null) {
-                        setState(() => selectedDate = pickedDate);
-                      }
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 12,
-                        horizontal: 16,
-                      ),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            selectedDate == null
-                                ? "Pilih tanggal izin"
-                                : DateFormat(
-                                  'EEEE, dd MMM yyyy',
-                                  'id_ID',
-                                ).format(selectedDate!),
-                          ),
-                          const Icon(Icons.calendar_today),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  TextField(
-                    controller: alasanController,
-                    decoration: const InputDecoration(
-                      hintText: "Masukkan alasan izin...",
-                      border: OutlineInputBorder(),
-                    ),
-                    maxLines: 3,
-                  ),
-                ],
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(24),
               ),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: const Text("Batal"),
+              child: Container(
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(24),
+                  border: Border.all(color: AppColor.blue, width: 2),
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    if (selectedDate == null) {
-                      showTopSnackBar(
-                        Overlay.of(context),
-                        const CustomSnackBar.error(
-                          message: "Pilih tanggal terlebih dahulu",
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Header
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: AppColor.blue.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Icon(
+                            Icons.send_and_archive_sharp,
+                            color: AppColor.blue,
+                            size: 24,
+                          ),
                         ),
-                      );
-                      return;
-                    }
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: AppStyle.titleBold(
+                            text: "Ajukan Izin",
+                            fontSize: 18,
+                            color: AppColor.blue,
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () => Navigator.pop(context),
+                          icon: const Icon(Icons.close),
+                          color: Colors.grey,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
 
-                    Navigator.pop(context);
-                    _ajukanIzin(
-                      alasan: alasanController.text.trim(),
-                      tanggal: selectedDate!,
-                    );
-                  },
-                  child: const Text("Kirim"),
+                    // Date Picker
+                    AppStyle.normalTitle(text: "Pilih Tanggal", fontSize: 14),
+                    const SizedBox(height: 8),
+                    InkWell(
+                      onTap: () async {
+                        final pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime.now().subtract(
+                            const Duration(days: 30),
+                          ),
+                          lastDate: DateTime.now().add(
+                            const Duration(days: 30),
+                          ),
+                          locale: const Locale("id", "ID"),
+                          builder: (context, child) {
+                            return Theme(
+                              data: Theme.of(context).copyWith(
+                                colorScheme: ColorScheme.light(
+                                  primary: AppColor.blue,
+                                  onPrimary: Colors.white,
+                                  surface: Colors.white,
+                                  onSurface: Colors.black,
+                                ),
+                              ),
+                              child: child!,
+                            );
+                          },
+                        );
+                        if (pickedDate != null) {
+                          setState(() => selectedDate = pickedDate);
+                        }
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 16,
+                          horizontal: 16,
+                        ),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: AppColor.blue),
+                          borderRadius: BorderRadius.circular(12),
+                          color: Colors.white,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              selectedDate == null
+                                  ? "Pilih tanggal izin"
+                                  : DateFormat(
+                                    'EEEE, dd MMM yyyy',
+                                    'id_ID',
+                                  ).format(selectedDate!),
+                              style: TextStyle(
+                                fontSize: 14,
+                                color:
+                                    selectedDate == null
+                                        ? Colors.grey[600]
+                                        : Colors.black,
+                              ),
+                            ),
+                            Icon(
+                              Icons.calendar_today,
+                              color: AppColor.blue,
+                              size: 20,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Reason TextField
+                    AppStyle.normalTitle(text: "Alasan Izin", fontSize: 14),
+                    const SizedBox(height: 8),
+                    TextField(
+                      controller: alasanController,
+                      decoration: InputDecoration(
+                        hintText: "Masukkan alasan izin...",
+                        hintStyle: TextStyle(color: Colors.grey[600]),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: AppColor.blue),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(
+                            color: AppColor.blue,
+                            width: 2,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: AppColor.blue),
+                        ),
+                        contentPadding: const EdgeInsets.all(16),
+                      ),
+                      maxLines: 3,
+                    ),
+                    const SizedBox(height: 24),
+
+                    // Action Buttons
+                    Row(
+                      children: [
+                        Expanded(
+                          child: OutlinedButton(
+                            onPressed: () => Navigator.pop(context),
+                            style: OutlinedButton.styleFrom(
+                              side: BorderSide(color: AppColor.blue),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              minimumSize: const Size(0, 48),
+                            ),
+                            child: AppStyle.titleBold(
+                              text: "Batal",
+                              color: AppColor.blue,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              if (selectedDate == null) {
+                                showTopSnackBar(
+                                  Overlay.of(context),
+                                  const CustomSnackBar.error(
+                                    message: "Pilih tanggal terlebih dahulu",
+                                  ),
+                                );
+                                return;
+                              }
+
+                              Navigator.pop(context);
+                              _ajukanIzin(
+                                alasan: alasanController.text.trim(),
+                                tanggal: selectedDate!,
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColor.blue,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              minimumSize: const Size(0, 48),
+                            ),
+                            child: AppStyle.titleBold(
+                              text: "Kirim",
+                              color: Colors.white,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-              ],
+              ),
             );
           },
         );
@@ -272,7 +399,7 @@ class _HomeScreenState extends State<HomeScreen> {
               bottom: 20,
             ),
             decoration: const BoxDecoration(
-              color: Color(0xff007BFF),
+              color: AppColor.blue,
               borderRadius: BorderRadius.vertical(bottom: Radius.circular(30)),
             ),
             child: Column(
@@ -296,6 +423,7 @@ class _HomeScreenState extends State<HomeScreen> {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(24),
+                border: Border.all(color: AppColor.blue, width: 2),
               ),
               child: Column(
                 children: [
@@ -358,7 +486,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(height: 20),
                   Container(
                     decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black),
+                      border: Border.all(color: AppColor.blue, width: 2),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Padding(
@@ -374,9 +502,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           Spacer(),
                           Container(
-                            width: 1,
+                            width: 2,
                             height: 54,
-                            color: Colors.grey,
+                            color: AppColor.blue,
                             margin: const EdgeInsets.symmetric(horizontal: 16),
                           ),
                           Spacer(),
@@ -408,7 +536,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 color: Colors.white,
               ),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
+                backgroundColor: AppColor.blue,
                 minimumSize: Size(double.infinity, 50),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -421,10 +549,12 @@ class _HomeScreenState extends State<HomeScreen> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Container(
+              height: 200,
               width: double.infinity,
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: Colors.white,
+                border: Border.all(color: AppColor.blue, width: 2),
                 borderRadius: BorderRadius.circular(16),
               ),
               child:
@@ -439,7 +569,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               const Text(
-                                "🕒 Attendance History",
+                                "🕒 Attendace History",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,
@@ -457,82 +587,97 @@ class _HomeScreenState extends State<HomeScreen> {
                                 child: AppStyle.titleBold(
                                   text: "View All",
                                   fontSize: 14,
-                                  color: Color(0xff007BFF),
+                                  color: AppColor.blue,
                                 ),
                               ),
                             ],
                           ),
                           const SizedBox(height: 8),
                           SizedBox(
-                            height: 200,
+                            height: 100,
+
                             child: ListView.builder(
+                              shrinkWrap: true,
                               itemCount: attendaceHistory.length,
                               itemBuilder: (context, index) {
                                 final item = attendaceHistory[index];
                                 final formattedDate = DateFormat(
                                   'EEEE, dd MMM yyyy',
-
                                   'id_ID',
                                 ).format(item.attendanceDate);
-                                final status = item.status.toLowerCase();
 
-                                late Icon statusIcon;
                                 late String statusLabel;
                                 late Color statusColor;
 
                                 if (item.checkInTime != null &&
                                     item.checkOutTime != null) {
-                                  statusIcon = const Icon(
-                                    Icons.check_circle,
-                                    color: Colors.green,
-                                  );
                                   statusLabel = "Masuk";
                                   statusColor = Colors.green;
                                 } else if (item.checkInTime != null &&
                                     item.checkOutTime == null) {
-                                  // ⚠️ Sudah Check-in, Belum Check-out
-                                  statusIcon = const Icon(
-                                    Icons.warning,
-                                    color: Colors.orange,
-                                  );
                                   statusLabel = "Tidak Lengkap";
                                   statusColor = Colors.orange;
                                 } else if (item.status.toLowerCase() ==
                                     "izin") {
-                                  statusIcon = const Icon(
-                                    Icons.event_busy,
-                                    color: Colors.blue,
-                                  );
                                   statusLabel = "Izin";
                                   statusColor = Colors.blue;
                                 } else {
-                                  statusIcon = const Icon(
-                                    Icons.cancel,
-                                    color: Colors.grey,
-                                  );
                                   statusLabel = "Tidak Hadir";
                                   statusColor = Colors.grey;
                                 }
-                                return Card(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16),
-                                  ),
-                                  margin: const EdgeInsets.symmetric(
-                                    vertical: 8,
-                                  ),
-                                  elevation: 3,
-                                  child: ListTile(
-                                    leading: Icon(
-                                      Icons.calendar_today,
-                                      color: statusColor,
+
+                                return Container(
+                                  margin: const EdgeInsets.only(bottom: 8),
+                                  padding: const EdgeInsets.all(12),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    border: Border.all(
+                                      color: AppColor.blue,
+                                      width: 1.5,
                                     ),
-                                    title: Text(formattedDate),
-                                    subtitle: Text("Status: $statusLabel"),
-                                    trailing: Icon(
-                                      Icons.circle,
-                                      color: statusColor,
-                                      size: 12,
-                                    ),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.calendar_today,
+                                        color: statusColor,
+                                        size: 20,
+                                      ),
+                                      const SizedBox(width: 12),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              formattedDate,
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 2),
+                                            Text(
+                                              "Status: $statusLabel",
+                                              style: TextStyle(
+                                                color: statusColor,
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        width: 8,
+                                        height: 8,
+                                        decoration: BoxDecoration(
+                                          color: statusColor,
+                                          shape: BoxShape.circle,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 );
                               },

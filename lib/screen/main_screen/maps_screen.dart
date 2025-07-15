@@ -26,6 +26,7 @@ class _MapsScreenState extends State<MapsScreen> {
 
   void handleCheckIn() async {
     try {
+      setState(() => isLoading = true);
       // Ambil posisi saat ini
       Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
@@ -71,7 +72,7 @@ class _MapsScreenState extends State<MapsScreen> {
 
       showTopSnackBar(
         Overlay.of(context),
-        const CustomSnackBar.success(message: "Checkin Berhasil"),
+        const CustomSnackBar.success(message: "Absen Masuk Berhasil"),
       );
       Navigator.pop(context);
     } catch (e) {
@@ -198,7 +199,7 @@ class _MapsScreenState extends State<MapsScreen> {
             item.attendanceDate.day == today.day,
       );
 
-      if (todayData != null && todayData.checkInTime != null) {
+      if (todayData.checkInTime != null) {
         setState(() {
           hasCheckedIn = true;
         });
@@ -254,42 +255,50 @@ class _MapsScreenState extends State<MapsScreen> {
             ),
             const SizedBox(height: 20),
             Expanded(
-              child: Column(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      if (hasCheckedIn) {
-                        handleCheckout();
-                      } else {
-                        handleCheckIn();
-                      }
-                    },
-                    child: Container(
-                      width: 100,
-                      height: 100,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.blue, width: 2),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Center(
-                        child: Icon(
-                          Icons.fingerprint,
-                          size: 50,
-                          color: Colors.blue,
+              child: Expanded(
+                child:
+                    isLoading
+                        ? Center(child: CircularProgressIndicator())
+                        : Column(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                if (hasCheckedIn) {
+                                  handleCheckout();
+                                } else {
+                                  handleCheckIn();
+                                }
+                              },
+                              child: Container(
+                                width: 100,
+                                height: 100,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Colors.blue,
+                                    width: 2,
+                                  ),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Center(
+                                  child: Icon(
+                                    Icons.fingerprint,
+                                    size: 50,
+                                    color: Colors.blue,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              hasCheckedIn ? "Check Out" : "Check In",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                                color: Colors.blue,
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    hasCheckedIn ? "Check Out" : "Check In",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                      color: Colors.blue,
-                    ),
-                  ),
-                ],
               ),
             ),
           ],

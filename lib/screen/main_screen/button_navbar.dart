@@ -1,5 +1,6 @@
 import 'package:circle_nav_bar/circle_nav_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:hadirin_app/constant/app_color.dart';
 import 'package:hadirin_app/constant/app_style.dart';
 import 'package:hadirin_app/screen/main_screen/dashboard_screen.dart';
 import 'package:hadirin_app/screen/main_screen/home_screen.dart';
@@ -49,7 +50,7 @@ class _ButtonNavbarState extends State<ButtonNavbar>
           AppStyle.titleBold(text: "Home", color: Colors.white),
           AppStyle.titleBold(text: "Dasboard", color: Colors.white),
         ],
-        color: Color(0xff007BFF),
+        color: AppColor.blue,
         height: 60,
         circleWidth: 60,
         activeIndex: tabIndex,

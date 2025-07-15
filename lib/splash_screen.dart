@@ -12,7 +12,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   void changePage() {
-    Future.delayed(Duration(seconds: 3), () async {
+    Future.delayed(Duration(seconds: 7), () async {
       String? isLogin = await PreferenceHandler.getToken();
       print("isLogin : $isLogin");
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hadirin_app/api/attendace_api.dart';
 import 'package:hadirin_app/api/training_api.dart';
 import 'package:hadirin_app/api/user_api.dart';
+import 'package:hadirin_app/constant/app_color.dart';
 import 'package:hadirin_app/constant/app_style.dart';
 import 'package:hadirin_app/model/attendace_response.dart';
 import 'package:hadirin_app/model/batch_response.dart';
@@ -105,9 +106,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    AppStyle.titleBold(text: "Info Pelatihan", fontSize: 20),
+                    Icon(Icons.school, color: AppColor.blue),
+                    const SizedBox(width: 8),
+                    AppStyle.titleBold(
+                      text: "Info Pelatihan",
+                      fontSize: 20,
+                      color: AppColor.blue,
+                    ),
                   ],
                 ),
               ),
@@ -351,18 +357,32 @@ class _DashboardScreenState extends State<DashboardScreen> {
               const SizedBox(height: 25),
 
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(16),
+                margin: const EdgeInsets.symmetric(horizontal: 16),
                 decoration: BoxDecoration(
-                  color: Colors.blue[50],
-                  borderRadius: BorderRadius.circular(12),
+                  gradient: LinearGradient(
+                    colors: [Color(0xff007BFF), Color(0xff66B2FF)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.blue.withOpacity(0.2),
+                      blurRadius: 6,
+                      offset: Offset(0, 4),
+                    ),
+                  ],
                 ),
-                child: Column(
+                child: Row(
                   children: [
+                    const Icon(Icons.bar_chart, color: Colors.white),
+                    const SizedBox(width: 8),
                     AppStyle.titleBold(
                       text: "Statistik Absen Anda",
                       fontSize: 20,
+                      color: Colors.white,
                     ),
-                    Divider(height: 20, thickness: 2, color: Colors.blue),
                   ],
                 ),
               ),
@@ -408,18 +428,32 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   Widget _buildStatCard(IconData icon, String label) {
     return Container(
-      width: 114,
-      padding: const EdgeInsets.all(12),
+      width: 130,
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 6,
+            offset: const Offset(0, 3),
+          ),
+        ],
       ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, color: Colors.blue),
-          const SizedBox(height: 8),
-
-          AppStyle.titleBold(text: label, fontSize: 12),
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: AppColor.blue.withOpacity(0.1),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(icon, color: AppColor.blue, size: 28),
+          ),
+          const SizedBox(height: 12),
+          AppStyle.titleBold(text: label, fontSize: 14, color: AppColor.blue),
         ],
       ),
     );

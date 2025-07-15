@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:hadirin_app/api/user_api.dart';
+import 'package:hadirin_app/constant/app_color.dart';
 import 'package:hadirin_app/constant/app_style.dart';
 import 'package:hadirin_app/model/user_response.dart';
 import 'package:hadirin_app/screen/auth/login.dart';
@@ -304,7 +305,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 const SizedBox(height: 20),
                                 ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.blue,
+                                    backgroundColor: AppColor.blue,
                                     fixedSize: const Size(280, 50),
                                   ),
                                   onPressed: () {

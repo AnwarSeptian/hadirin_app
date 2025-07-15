@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hadirin_app/api/attendace_api.dart';
+import 'package:hadirin_app/constant/app_color.dart';
 import 'package:hadirin_app/constant/app_style.dart';
 import 'package:hadirin_app/model/attendace_response.dart';
 import 'package:intl/intl.dart';
@@ -59,8 +60,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: AppStyle.titleBold(text: "Riwayat Absensi", color: Colors.white),
         backgroundColor: const Color(0xff007BFF),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: AppStyle.titleBold(text: "Riwayat Absensi", color: Colors.white),
       ),
       body:
           _isLoading
@@ -70,7 +75,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
               : Column(
                 children: [
                   Padding(
-                    padding: EdgeInsets.all(8),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 12,
+                    ),
                     child: Wrap(
                       spacing: 8,
                       children:
@@ -85,10 +93,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
                               style: ElevatedButton.styleFrom(
                                 backgroundColor:
                                     isSelected ? Colors.blue : Colors.grey[300],
+
                                 foregroundColor:
                                     isSelected ? Colors.white : Colors.black,
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30),
+                                  borderRadius: BorderRadius.circular(16),
                                 ),
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: 16,
@@ -100,10 +109,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           }).toList(),
                     ),
                   ),
-
                   Expanded(
                     child: ListView.builder(
-                      padding: const EdgeInsets.all(16),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
                       itemCount: _filteredHistory().length,
                       itemBuilder: (context, index) {
                         final item = _filteredHistory()[index];
@@ -128,8 +139,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
                             0,
                             0,
                           );
-
-                          // Parsing checkInTime dari string ke DateTime
                           final parsedCheckIn = DateFormat(
                             "HH:mm",
                           ).parse(item.checkInTime!);
@@ -140,7 +149,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
                             parsedCheckIn.hour,
                             parsedCheckIn.minute,
                           );
-
                           final isLate = checkInDateTime.isAfter(jamMasukKerja);
 
                           statusIcon =
@@ -153,7 +161,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                     Icons.check_circle,
                                     color: Colors.green,
                                   );
-
                           statusLabel = isLate ? "Telat" : "Masuk";
                           statusColor = isLate ? Colors.red : Colors.green;
                         } else if (item.checkInTime != null &&
@@ -172,7 +179,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           statusLabel = "Izin";
                           statusColor = Colors.blue;
                         } else {
-                          // Tidak ditampilkan karena bukan bagian dari 3 status yang disaring
                           return const SizedBox.shrink();
                         }
 
@@ -180,7 +186,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           elevation: 3,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16),
+                            side: BorderSide(color: AppColor.blue, width: 1),
                           ),
+                          shadowColor: AppColor.blue,
+
                           margin: const EdgeInsets.only(bottom: 12),
                           child: ListTile(
                             leading: statusIcon,
