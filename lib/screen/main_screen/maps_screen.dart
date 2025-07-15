@@ -48,6 +48,7 @@ class _MapsScreenState extends State<MapsScreen> {
             message: "Anda berada di luar area kantor",
           ),
         );
+        setState(() => isLoading = false);
         return;
       }
 
@@ -106,6 +107,7 @@ class _MapsScreenState extends State<MapsScreen> {
           Overlay.of(context),
           const CustomSnackBar.error(message: "Anda berada di luar kantor"),
         );
+        setState(() => isLoading = false);
         return; // Stop eksekusi jika tidak di lokasi yang diperbolehkan
       }
 
