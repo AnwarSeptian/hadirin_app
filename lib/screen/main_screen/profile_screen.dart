@@ -340,6 +340,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ],
                             ),
                           ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.copyright),
+                              AppStyle.normalTitle(text: "Copyright 2025"),
+                            ],
+                          ),
                         ],
                       ),
             ),

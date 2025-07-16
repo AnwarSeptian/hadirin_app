@@ -419,6 +419,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
 
               const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.copyright),
+                  AppStyle.normalTitle(text: "Copyright 2025"),
+                ],
+              ),
             ],
           ),
         ),

@@ -342,6 +342,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     ),
                                   ],
                                 ),
+                                SizedBox(height: 12),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.copyright),
+                                    AppStyle.normalTitle(
+                                      text: "Copyright 2025",
+                                    ),
+                                  ],
+                                ),
                               ],
                             ),
                           ),

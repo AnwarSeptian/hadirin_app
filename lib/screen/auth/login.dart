@@ -187,6 +187,15 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                 ],
                               ),
+                              SizedBox(height: 12),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.copyright),
+                                  AppStyle.normalTitle(text: "Copyright 2025"),
+                                ],
+                              ),
+                              SizedBox(height: 12),
                             ],
                           ),
                         ),

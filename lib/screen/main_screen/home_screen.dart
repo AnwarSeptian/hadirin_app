@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:hadirin_app/api/attendace_api.dart';
 import 'package:hadirin_app/constant/app_color.dart';
@@ -406,296 +407,316 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       backgroundColor: const Color(0xffE6F0FA),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            // Header
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.only(
-                top: 50,
-                left: 16,
-                right: 16,
-                bottom: 20,
-              ),
-              decoration: const BoxDecoration(
-                color: Color(0xff007BFF),
-                borderRadius: BorderRadius.vertical(
-                  bottom: Radius.circular(30),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              // Header
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.only(
+                  top: 50,
+                  left: 16,
+                  right: 16,
+                  bottom: 20,
                 ),
-              ),
-              child: Column(
-                children: [
-                  AppStyle.titleBold(
-                    text: _currentTime,
-                    color: Colors.white,
-                    fontSize: 36,
+                decoration: const BoxDecoration(
+                  color: Color(0xff007BFF),
+                  borderRadius: BorderRadius.vertical(
+                    bottom: Radius.circular(30),
                   ),
-                  AppStyle.normalTitle(text: _currentDate, color: Colors.white),
-                ],
-              ),
-            ),
-            const SizedBox(height: 16),
-
-            // Checkin / Checkout Card
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 30,
-                  vertical: 15,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(24),
                 ),
                 child: Column(
                   children: [
-                    GestureDetector(
-                      onTap: () async {
-                        if ((todayAttendance?.checkInTime != null &&
-                                todayAttendance?.checkOutTime != null) ||
-                            todayAttendance?.status.toLowerCase() == "izin") {
-                          return;
-                        }
-
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => MapsScreen()),
-                        );
-                        fetchAttendance(); //refresh setelah kembali dari MapsScreen
-                        checkTodayAttendanceStatus();
-                      },
-
-                      child: Opacity(
-                        opacity:
-                            (todayAttendance?.checkInTime != null &&
-                                        todayAttendance?.checkOutTime != null ||
-                                    todayAttendance?.status.toLowerCase() ==
-                                        "izin")
-                                ? 0.4
-                                : 1.0,
-                        child: Container(
-                          width: 100,
-                          height: 100,
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.blue, width: 2),
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Center(
-                            child: Icon(
-                              Icons.fingerprint,
-                              size: 50,
-                              color: Colors.blue,
-                            ),
-                          ),
-                        ),
-                      ),
+                    AppStyle.titleBold(
+                      text: _currentTime,
+                      color: Colors.white,
+                      fontSize: 36,
                     ),
-
-                    const SizedBox(height: 10),
-                    Text(
-                      (todayAttendance?.checkInTime != null &&
-                                  todayAttendance?.checkOutTime != null ||
-                              todayAttendance?.status.toLowerCase() == "izin")
-                          ? "Completed"
-                          : hasCheckedIn
-                          ? "Check Out"
-                          : "Check In",
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Row(
-                          children: [
-                            Column(
-                              children: [
-                                AppStyle.normalTitle(text: "Check in"),
-                                const SizedBox(height: 8),
-                                AppStyle.normalTitle(text: checkInTime),
-                              ],
-                            ),
-                            Spacer(),
-                            Container(
-                              width: 1,
-                              height: 54,
-                              color: Colors.grey,
-                              margin: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                              ),
-                            ),
-                            Spacer(),
-                            Column(
-                              children: [
-                                AppStyle.normalTitle(text: "Checkout"),
-                                const SizedBox(height: 8),
-                                AppStyle.normalTitle(text: checkOutTime),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
+                    AppStyle.normalTitle(
+                      text: _currentDate,
+                      color: Colors.white,
                     ),
                   ],
                 ),
               ),
-            ),
+              const SizedBox(height: 16),
 
-            const SizedBox(height: 20),
+              // Checkin / Checkout Card
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 30,
+                    vertical: 15,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  child: Column(
+                    children: [
+                      GestureDetector(
+                        onTap: () async {
+                          if ((todayAttendance?.checkInTime != null &&
+                                  todayAttendance?.checkOutTime != null) ||
+                              todayAttendance?.status.toLowerCase() == "izin") {
+                            return;
+                          }
 
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: ElevatedButton.icon(
-                onPressed: () => _showIzinDialog(context),
-                icon: Icon(Icons.send_and_archive_sharp, color: Colors.white),
-                label: AppStyle.titleBold(
-                  text: "Ajukan Izin",
-                  color: Colors.white,
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  minimumSize: Size(double.infinity, 50),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MapsScreen(),
+                            ),
+                          );
+                          fetchAttendance(); //refresh setelah kembali dari MapsScreen
+                          checkTodayAttendanceStatus();
+                        },
+
+                        child: Opacity(
+                          opacity:
+                              (todayAttendance?.checkInTime != null &&
+                                          todayAttendance?.checkOutTime !=
+                                              null ||
+                                      todayAttendance?.status.toLowerCase() ==
+                                          "izin")
+                                  ? 0.4
+                                  : 1.0,
+                          child: Container(
+                            width: 100,
+                            height: 100,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.blue, width: 2),
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Center(
+                              child: Icon(
+                                Icons.fingerprint,
+                                size: 50,
+                                color: Colors.blue,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 10),
+                      Text(
+                        (todayAttendance?.checkInTime != null &&
+                                    todayAttendance?.checkOutTime != null ||
+                                todayAttendance?.status.toLowerCase() == "izin")
+                            ? "Completed"
+                            : hasCheckedIn
+                            ? "Check Out"
+                            : "Check In",
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Row(
+                            children: [
+                              Column(
+                                children: [
+                                  AppStyle.normalTitle(text: "Check in"),
+                                  const SizedBox(height: 8),
+                                  AppStyle.normalTitle(text: checkInTime),
+                                ],
+                              ),
+                              Spacer(),
+                              Container(
+                                width: 1,
+                                height: 54,
+                                color: Colors.grey,
+                                margin: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                ),
+                              ),
+                              Spacer(),
+                              Column(
+                                children: [
+                                  AppStyle.normalTitle(text: "Checkout"),
+                                  const SizedBox(height: 8),
+                                  AppStyle.normalTitle(text: checkOutTime),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-            ),
 
-            // Attendance History
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
+              const SizedBox(height: 20),
+
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
                 ),
-                child:
-                    isLoading
-                        ? const Center(child: CircularProgressIndicator())
-                        : attendaceHistory.isEmpty
-                        ? const Center(child: Text("Belum ada data absensi"))
-                        : Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text(
-                                  "🕒 Attendance History",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
+                child: ElevatedButton.icon(
+                  onPressed: () => _showIzinDialog(context),
+                  icon: Icon(Icons.send_and_archive_sharp, color: Colors.white),
+                  label: AppStyle.titleBold(
+                    text: "Ajukan Izin",
+                    color: Colors.white,
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    minimumSize: Size(double.infinity, 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+              ),
+
+              // Attendance History
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child:
+                      isLoading
+                          ? const Center(child: CircularProgressIndicator())
+                          : attendaceHistory.isEmpty
+                          ? const Center(child: Text("Belum ada data absensi"))
+                          : Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Text(
+                                    "🕒 Attendance History",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
                                   ),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => HistoryScreen(),
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => HistoryScreen(),
+                                        ),
+                                      );
+                                    },
+                                    child: AppStyle.titleBold(
+                                      text: "View All",
+                                      fontSize: 14,
+                                      color: Color(0xff007BFF),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 200,
+                                child: ListView.builder(
+                                  itemCount: attendaceHistory.length,
+                                  itemBuilder: (context, index) {
+                                    final item = attendaceHistory[index];
+                                    final formattedDate = DateFormat(
+                                      'EEEE, dd MMM yyyy',
+                                      'id_ID',
+                                    ).format(item.attendanceDate);
+                                    final status = item.status.toLowerCase();
+
+                                    late Icon statusIcon;
+                                    late String statusLabel;
+                                    late Color statusColor;
+
+                                    if (item.checkInTime != null &&
+                                        item.checkOutTime != null) {
+                                      statusIcon = const Icon(
+                                        Icons.check_circle,
+                                        color: Colors.green,
+                                      );
+                                      statusLabel = "Masuk";
+                                      statusColor = Colors.green;
+                                    } else if (item.checkInTime != null &&
+                                        item.checkOutTime == null) {
+                                      // ⚠️ Sudah Check-in, Belum Check-out
+                                      statusIcon = const Icon(
+                                        Icons.warning,
+                                        color: Colors.orange,
+                                      );
+                                      statusLabel = "Tidak Lengkap";
+                                      statusColor = Colors.orange;
+                                    } else if (item.status.toLowerCase() ==
+                                        "izin") {
+                                      statusIcon = const Icon(
+                                        Icons.event_busy,
+                                        color: Colors.blue,
+                                      );
+                                      statusLabel = "Izin";
+                                      statusColor = Colors.blue;
+                                    } else {
+                                      statusIcon = const Icon(
+                                        Icons.cancel,
+                                        color: Colors.grey,
+                                      );
+                                      statusLabel = "Tidak Hadir";
+                                      statusColor = Colors.grey;
+                                    }
+                                    return Card(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
+                                      margin: const EdgeInsets.symmetric(
+                                        vertical: 8,
+                                      ),
+                                      elevation: 3,
+                                      child: ListTile(
+                                        leading: Icon(
+                                          Icons.calendar_today,
+                                          color: statusColor,
+                                        ),
+                                        title: Text(formattedDate),
+                                        subtitle: Text("Status: $statusLabel"),
+                                        trailing: Icon(
+                                          Icons.circle,
+                                          color: statusColor,
+                                          size: 12,
+                                        ),
                                       ),
                                     );
                                   },
-                                  child: AppStyle.titleBold(
-                                    text: "View All",
-                                    fontSize: 14,
-                                    color: Color(0xff007BFF),
-                                  ),
                                 ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 200,
-                              child: ListView.builder(
-                                itemCount: attendaceHistory.length,
-                                itemBuilder: (context, index) {
-                                  final item = attendaceHistory[index];
-                                  final formattedDate = DateFormat(
-                                    'EEEE, dd MMM yyyy',
-                                    'id_ID',
-                                  ).format(item.attendanceDate);
-                                  final status = item.status.toLowerCase();
-
-                                  late Icon statusIcon;
-                                  late String statusLabel;
-                                  late Color statusColor;
-
-                                  if (item.checkInTime != null &&
-                                      item.checkOutTime != null) {
-                                    statusIcon = const Icon(
-                                      Icons.check_circle,
-                                      color: Colors.green,
-                                    );
-                                    statusLabel = "Masuk";
-                                    statusColor = Colors.green;
-                                  } else if (item.checkInTime != null &&
-                                      item.checkOutTime == null) {
-                                    // ⚠️ Sudah Check-in, Belum Check-out
-                                    statusIcon = const Icon(
-                                      Icons.warning,
-                                      color: Colors.orange,
-                                    );
-                                    statusLabel = "Tidak Lengkap";
-                                    statusColor = Colors.orange;
-                                  } else if (item.status.toLowerCase() ==
-                                      "izin") {
-                                    statusIcon = const Icon(
-                                      Icons.event_busy,
-                                      color: Colors.blue,
-                                    );
-                                    statusLabel = "Izin";
-                                    statusColor = Colors.blue;
-                                  } else {
-                                    statusIcon = const Icon(
-                                      Icons.cancel,
-                                      color: Colors.grey,
-                                    );
-                                    statusLabel = "Tidak Hadir";
-                                    statusColor = Colors.grey;
-                                  }
-                                  return Card(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(16),
-                                    ),
-                                    margin: const EdgeInsets.symmetric(
-                                      vertical: 8,
-                                    ),
-                                    elevation: 3,
-                                    child: ListTile(
-                                      leading: Icon(
-                                        Icons.calendar_today,
-                                        color: statusColor,
-                                      ),
-                                      title: Text(formattedDate),
-                                      subtitle: Text("Status: $statusLabel"),
-                                      trailing: Icon(
-                                        Icons.circle,
-                                        color: statusColor,
-                                        size: 12,
-                                      ),
-                                    ),
-                                  );
-                                },
                               ),
-                            ),
-                          ],
-                        ),
+                            ],
+                          ),
+                ),
               ),
-            ),
-            const SizedBox(height: 24),
-          ],
+              const SizedBox(height: 24),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.copyright),
+                  AppStyle.normalTitle(text: "Copyright 2025"),
+                ],
+              ),
+              const SizedBox(height: 24),
+            ],
+          ),
         ),
       ),
     );
