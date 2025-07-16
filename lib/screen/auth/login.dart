@@ -191,8 +191,16 @@ class _LoginScreenState extends State<LoginScreen> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(Icons.copyright),
-                                  AppStyle.normalTitle(text: "Copyright 2025"),
+                                  Icon(
+                                    Icons.copyright,
+                                    color: Colors.blueGrey,
+                                    size: 20,
+                                  ),
+                                  AppStyle.normalTitle(
+                                    text: "2025 Hadirin App",
+                                    fontSize: 12,
+                                    color: Colors.blueGrey,
+                                  ),
                                 ],
                               ),
                               SizedBox(height: 12),

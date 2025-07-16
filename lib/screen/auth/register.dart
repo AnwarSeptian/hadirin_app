@@ -346,9 +346,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Icon(Icons.copyright),
+                                    Icon(
+                                      Icons.copyright,
+                                      color: Colors.blueGrey,
+                                      size: 20,
+                                    ),
                                     AppStyle.normalTitle(
-                                      text: "Copyright 2025",
+                                      text: "2025 Hadirin App",
+                                      color: Colors.blueGrey,
                                     ),
                                   ],
                                 ),

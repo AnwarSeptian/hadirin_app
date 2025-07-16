@@ -343,8 +343,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(Icons.copyright),
-                              AppStyle.normalTitle(text: "Copyright 2025"),
+                              Icon(
+                                Icons.copyright,
+                                color: Colors.blueGrey,
+                                size: 20,
+                              ),
+                              AppStyle.normalTitle(
+                                text: "2025 Hadirin App",
+                                color: Colors.blueGrey,
+                              ),
                             ],
                           ),
                         ],
