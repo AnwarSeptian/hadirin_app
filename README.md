@@ -1,16 +1,8 @@
-# hadirin_app
+# Hadirin App
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![Home](https://github.com/AnwarSeptian/hadirin_app/blob/main/assets/images/Introduction.png)
+![Home](https://github.com/AnwarSeptian/hadirin_app/blob/main/assets/images/Checkin.png)
+![Home](https://github.com/AnwarSeptian/hadirin_app/blob/main/assets/images/Checkout.png)
+![Home](https://github.com/AnwarSeptian/hadirin_app/blob/main/assets/images/Riwayat%20Absensi.png)
+![Home](https://github.com/AnwarSeptian/hadirin_app/blob/main/assets/images/Profile.png)
+![Home](https://github.com/AnwarSeptian/hadirin_app/blob/main/assets/images/Login%20%26%20Register.png)
